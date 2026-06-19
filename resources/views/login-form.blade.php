@@ -25,15 +25,15 @@
 
                         <!-- Campo de Email -->
                         <div class="mb-4">
-                            <label for="login-username" class="form-label text-dark fw-semibold small tracking-oriental mb-2">EMAIL</label>
+                            <label for="login-email" class="form-label text-dark fw-semibold small tracking-oriental mb-2">EMAIL</label>
                             <input type="email" class="form-control oriental-input px-3 py-2.5 rounded-0"
-                                   id="login-username"
-                                   name="login_username"
-                                   value="{{ old('login_username') }}"
+                                   id="login-email"
+                                   name="login_email"
+                                   value="{{ old('login_email') }}"
                                    placeholder="exemplo@notes.com"
                                    required>
 
-                            @error('login_username')
+                            @error('login_email')
                             <div class="text-oriental-error small mt-2 fw-light">
                                 ［ {{ $message }} ］
                             </div>
@@ -65,6 +65,13 @@
                             </button>
                         </div>
                     </form>
+
+                    <!-- Informar erro de login -->
+                    @if(session('loginError'))
+                        <div class="text-oriental-error small mt-2 fw-light">
+                            ［ {{ session('loginError') }} ］
+                        </div>
+                    @endif
 
                     <!-- Rodapé -->
                     <div class="mt-5 pt-3 d-flex justify-content-between text-muted" style="font-size: 0.65rem; border-top: 1px dashed #e5e3dd;">

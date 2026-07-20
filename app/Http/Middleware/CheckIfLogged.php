@@ -9,17 +9,16 @@ use Symfony\Component\HttpFoundation\Response;
 class CheckIfLogged
 {
     /**
-     * Handle an incoming request.
-     *
-     * @param  Closure(Request): (Response)  $next
+     * Intercepta a requisição antes que ela chegue no Controller.
      */
     public function handle(Request $request, Closure $next): Response
     {
-        //validar se o usuário esta logado
+        // 1. Bloqueio: Se NÃO houver 'user' salvo na sessão, desvia o usuário direto para a tela de login
         if(!session('user')) {
             return redirect('/login');
         }
 
+        // 2. Permissão: Se o usuário estiver logado, deixa a requisição continuar para a rota solicitada
         return $next($request);
     }
 }

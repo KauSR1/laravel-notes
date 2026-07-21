@@ -33,8 +33,15 @@
                     <!-- text-muted d-block: Cor cinza suave e força a tag small a se comportar como bloco (pulando linha). -->
                     <!-- font-family: monospace: Fonte estilo código/máquina de escrever, que traz um visual bem "studio minimalista". -->
                     <small class="text-muted d-block" style="font-size: 0.7rem; font-family: monospace;">
-                        {{ $note['created_at'] }}
+                        created:
+                        {{ date('Y-m-d-m H:i:s', strtotime($note['created_at'])) }}
                     </small>
+                    @if($note['created_at'] != $note['updated_at'])
+                        <small class="text-muted d-block" style="font-size: 0.7rem; font-family: monospace;">
+                            edit:
+                            {{ date('Y-m-d-m H:i:s', strtotime($note['updated_at'])) }}
+                        </small>
+                    @endif
                 </div>
 
                 <!-- Área de Ações (Botões de Editar e Deletar) -->
@@ -43,13 +50,13 @@
                     <!-- Botão de Editar -->
                     <!-- btn-oriental-outline: Usa o estilo customizado cinza/borda fina criado no seu CSS. -->
                     <!-- btn-sm rounded-0 mx-1: Botão no tamanho pequeno, sem bordas arredondadas e com leve espaçamento nas laterais (eixo X). -->
-                    <a href="#" class="btn btn-oriental-outline btn-sm rounded-0 mx-1" title="Edit">
+                    <a href="{{Route('editNote', ['id' => Crypt::encrypt($note['id'])])}}" class="btn btn-oriental-outline btn-sm rounded-0 mx-1" title="Edit">
                         <i class="fa-regular fa-pen-to-square"></i>
                     </a>
 
                     <!-- Botão de Deletar -->
                     <!-- btn-oriental-danger: Usa o estilo customizado vermelho sutil que você criou no CSS para ações críticas. -->
-                    <a href="#" class="btn btn-oriental-danger btn-sm rounded-0 mx-1" title="Delete">
+                    <a href="{{Route('del', ['id' => Crypt::encrypt($note['id'])])}}" class="btn btn-oriental-danger btn-sm rounded-0 mx-1" title="Delete">
                         <i class="fa-regular fa-trash-can"></i>
                     </a>
                 </div>

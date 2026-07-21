@@ -24,7 +24,7 @@
             <div class="d-flex justify-content-center justify-content-md-end align-items-center gap-3">
                 <!-- E-mail do usuário: text-truncate e max-width evitam que e-mails longos quebrem o layout. -->
                 <span class="small text-dark fw-semibold tracking-oriental text-truncate" style="font-size: 0.75rem; max-width: 200px;">
-                    <i class="fa-solid fa-user-circle me-2 opacity-50"></i>{{ '[email]' }}
+                    <i class="fa-solid fa-user-circle me-2 opacity-50"></i>{{ session('user.email') }}
                 </span>
                 <!-- Botão Logout: Estilo oriental outline, limpo e em caixa alta. -->
                 <a href="{{ route('logout') }}" class="btn btn-oriental-outline btn-sm rounded-0 px-3 text-uppercase fw-bold">

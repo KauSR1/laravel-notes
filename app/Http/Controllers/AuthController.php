@@ -24,7 +24,7 @@ class AuthController extends Controller
         $request->validate([
             'login_email' => 'required|email',
             'login_password' => 'required|min:6|max:20'
-        ],
+            ],
             [
                 'login_email.required' => 'O campo e-mail deve ser preenchido.',
                 'login_email.email' => 'O login deve ser preenchido com um email válido.',
@@ -63,7 +63,12 @@ class AuthController extends Controller
         $user_validated->save();
 
         // 7. Sessão: Grava o e-mail e o ID do usuário na sessão do navegador (identifica o usuário logado)
-        session(['user' => $user_validated->email, 'id' => $user_validated->id]);
+        session([
+            'user' => [
+                'id'    => $user_validated->id,
+                'email' => $user_validated->email,
+            ]
+        ]);
 
         // 8. Sucesso: Redireciona o usuário para a página inicial (Home)
         return redirect()->to('/');

@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Note extends Model
 {
+    Use SoftDeletes;
     /**
      * Define o relacionamento inverso com o Usuário.
      */

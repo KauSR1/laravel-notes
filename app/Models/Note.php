@@ -7,14 +7,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Note extends Model
 {
+    // Ativa soft delete (exclusão lógica)
     Use SoftDeletes;
+
     /**
-     * Define o relacionamento inverso com o Usuário.
+     * Relacionamento: Pertence a um usuário
      */
     public function user()
     {
-        // AJUSTE: Troquei 'belongsToMany' (Muitos para Muitos) por 'belongsTo' (Muitos para Um).
-        // Significa: "Esta nota pertence a um único Usuário".
+        // Uma nota pertence a apenas 1 usuário
         return $this->belongsTo(User::class);
     }
 }

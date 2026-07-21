@@ -9,16 +9,16 @@ use Symfony\Component\HttpFoundation\Response;
 class CheckIsNotLogged
 {
     /**
-     * Intercepta a requisição (usado em rotas como a tela de Login).
+     * Impedir acesso de usuários já logados
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // 1. Redirecionamento: Se o usuário JÁ estiver logado, impede que ele veja a tela de login e o manda para a Home
+        // Se JÁ estiver logado -> vai pra Home
         if(session('user')) {
             return redirect('/');
         }
 
-        // 2. Permissão: Se o usuário NÃO estiver logado, permite que ele acesse a página normalmente (ex: formulário de login)
+        // Se NÃO estiver logado -> continua
         return $next($request);
     }
 }

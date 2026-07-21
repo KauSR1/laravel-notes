@@ -9,33 +9,33 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-// Atributos PHP (Laravel 11+): Define quais campos aceitam cadastro em massa (Fillable) e quais ficam ocultos em consultas (Hidden)
+// Campos liberados para cadastro em massa
 #[Fillable(['name', 'email', 'password'])]
+// Campos ocultados no retorno do JSON/Array
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    // Traits padrão do Laravel para habilitar Factories (testes) e Notificações (e-mails, etc)
     use HasFactory, Notifiable;
 
     /**
-     * Conversão de Tipos (Casting).
+     * Conversão de tipos de dados
      */
     protected function casts(): array
     {
         return [
-            // Transforma o campo em um objeto Carbon (Data/Hora) do PHP
+            // Converter para objeto de Data/Hora
             'email_verified_at' => 'datetime',
-            // Encripta a senha automaticamente ao salvar no banco usando as ferramentas nativas
+            // Hash automático na senha ao salvar
             'password' => 'hashed',
         ];
     }
 
     /**
-     * Relacionamento: Um para Muitos.
+     * Relacionamento: Tem muitas notas
      */
     public function notes()
     {
-        // hasMany: Define que este Usuário pode possuir várias Notas vinculadas ao seu ID
+        // Usuário possui várias notas
         return $this->hasMany(Note::class);
     }
 }

@@ -9,22 +9,23 @@ use Illuminate\Support\Facades\DB;
 class AuthController extends Controller
 {
     /**
-     * Exibe a tela com o formulário de login.
+     * Tela de login
      */
     public function login() {
+        // Exibe a view com o formulário
         return view('login-form');
     }
 
     /**
-     * Processa o envio do formulário de login (Autenticação).
+     * Ação de login (Autenticação)
      */
     public function loginSubmit(Request $request) {
 
-        // 1. Validação: Garante que os dados enviados seguem as regras e define mensagens de erro customizadas
+        // Validar campos (E-mail e Senha)
         $request->validate([
             'login_email' => 'required|email',
             'login_password' => 'required|min:6|max:20'
-            ],
+        ],
             [
                 'login_email.required' => 'O campo e-mail deve ser preenchido.',
                 'login_email.email' => 'O login deve ser preenchido com um email válido.',
@@ -33,16 +34,16 @@ class AuthController extends Controller
                 'login_password.max' => 'A senha deve ter no máximo :max caracteres.'
             ]);
 
-        // 2. Captura: Guarda o e-mail e senha vindos do formulário em variáveis
+        // Pegar dados do form
         $email = $request->input('login_email');
         $password = $request->input('login_password');
 
-        // 3. Busca no Banco: Procura pelo usuário ativo (não deletado) usando o e-mail informado
+        // Buscar usuário ativo no banco
         $user_validated = User::where('email', $email)
             ->where('deleted_at', null)
             ->first();
 
-        // 4. Checagem de E-mail: Se o usuário não for encontrado, volta ao formulário com erro
+        // Se e-mail não existir -> erro
         if (!$user_validated) {
             return redirect()
                 ->back()
@@ -50,7 +51,7 @@ class AuthController extends Controller
                 ->with('loginError', 'Email ou senha invalido.');
         }
 
-        // 5. Checagem de Senha: Descriptografa e compara a senha digitada com a do banco
+        // Se senha não bater -> erro
         if (!password_verify($password, $user_validated->password)) {
             return redirect()
                 ->back()
@@ -58,11 +59,11 @@ class AuthController extends Controller
                 ->with('loginError', 'Email ou senha invalido.');
         }
 
-        // 6. Histórico: Atualiza e salva a coluna 'last_login' com a data/hora atual do acesso
+        // Registrar data/hora do último acesso
         $user_validated->last_login = date('Y-m-d H:i:s');
         $user_validated->save();
 
-        // 7. Sessão: Grava o e-mail e o ID do usuário na sessão do navegador (identifica o usuário logado)
+        // Salvar dados do usuário na sessão (ID e E-mail)
         session([
             'user' => [
                 'id'    => $user_validated->id,
@@ -70,18 +71,18 @@ class AuthController extends Controller
             ]
         ]);
 
-        // 8. Sucesso: Redireciona o usuário para a página inicial (Home)
+        // Ir para a Home
         return redirect()->to('/');
     }
 
     /**
-     * Desconecta o usuário do sistema.
+     * Ação de Logout
      */
     public function logout() {
-        // session()->flush(): Limpa e destrói todos os dados salvos na sessão atual (incluindo o ID)
+        // Limpar sessão
         session()->flush();
 
-        // Redireciona de volta para a tela de login
+        // Voltar para o login
         return redirect()->route('login');
     }
 }

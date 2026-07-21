@@ -8,15 +8,15 @@ use Illuminate\Support\Facades\Crypt;
 class Operations
 {
     /**
-     * Tenta descriptografar um ID vindo da URL
+     * Descriptografar ID
      */
     public static function decryptId($value)
     {
         try {
-            // Tenta descriptografar o valor recebido
+            // Descriptografar valor
             $value = Crypt::decrypt($value);
         } catch (DecryptException $e) {
-            // Em caso de falha/hash inválido, redireciona para a Home
+            // Se falhar/inválido -> retorna null
             return null;
         }
 
